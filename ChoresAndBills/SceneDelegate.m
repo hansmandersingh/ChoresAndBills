@@ -18,7 +18,27 @@
     // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
     // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
     // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
+    self.window = [[UIWindow alloc] initWithWindowScene:(UIWindowScene *)scene];
+    [GIDSignIn.sharedInstance restorePreviousSignInWithCompletion:^(GIDGoogleUser * _Nullable user,
+                                                                      NSError * _Nullable error) {
+        if (error) {
+            UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:[LoginViewController new]];
+            [navController setModalPresentationStyle:UIModalPresentationFullScreen];
+            self.window.rootViewController = navController;
+            //[self.window.rootViewController.navigationController setViewControllers:@[[LoginViewController new]] animated:YES];
+        } else {
+            HomeViewController *homeViewControllerNew = [[HomeViewController alloc] init];
+            homeViewControllerNew.user = user;
+            UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:homeViewControllerNew];
+            self.window.rootViewController = navController;
+            NSLog(@"%@",[[FIRAuth auth] currentUser].displayName);//firebase auth works here 
+        }
+      }];
+    
+    [self.window makeKeyAndVisible];
 }
+
+
 
 
 - (void)sceneDidDisconnect:(UIScene *)scene {
@@ -51,6 +71,22 @@
     // Called as the scene transitions from the foreground to the background.
     // Use this method to save data, release shared resources, and store enough scene-specific state information
     // to restore the scene back to its current state.
+}
+
+- (BOOL)application:(UIApplication *)app
+            openURL:(NSURL *)url
+            options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
+  BOOL handled;
+
+  handled = [GIDSignIn.sharedInstance handleURL:url];
+  if (handled) {
+    return YES;
+  }
+
+  // Handle other custom URL types.
+
+  // If not handled by this app, return NO.
+  return NO;
 }
 
 

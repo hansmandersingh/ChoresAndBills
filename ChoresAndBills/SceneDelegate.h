@@ -6,6 +6,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ViewController.h"
+#import "LoginViewController.h"
+#import "GIDSignIn.h"
+@import FirebaseCore;
+@import FirebaseAuth;
 
 @interface SceneDelegate : UIResponder <UIWindowSceneDelegate>
 

@@ -6,6 +6,7 @@
 //
 
 #import "AppDelegate.h"
+@import FirebaseCore;
 
 @interface AppDelegate ()
 
@@ -16,9 +17,15 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    [FIRApp configure];
     return YES;
 }
 
+- (BOOL)application:(nonnull UIApplication *)application
+            openURL:(nonnull NSURL *)url
+            options:(nonnull NSDictionary<NSString *, id> *)options {
+  return [[GIDSignIn sharedInstance] handleURL:url];
+}
 
 #pragma mark - UISceneSession lifecycle
 

@@ -6,9 +6,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "GIDGoogleUser.h"
+#import "LoginViewController.h"
 
 @interface ViewController : UIViewController
 
+@property (nonatomic) GIDGoogleUser *user;
 
 @end
 

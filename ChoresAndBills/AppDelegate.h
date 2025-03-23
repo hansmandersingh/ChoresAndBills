@@ -6,6 +6,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "GIDSignIn.h"
+#import "LoginViewController.h"
+#import "HomeViewController.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
