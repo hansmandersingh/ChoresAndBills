@@ -11,6 +11,8 @@
 #import "LoginViewController.h"
 #import "FIRUserInfo.h"
 #import "UserInfo.h"
+#import "ChoresViewController.h"
+#import "BillsViewController.h"
 @import FirebaseCore;
 @import FirebaseAuth;
 
@@ -19,6 +21,7 @@
 @property (nonatomic) GIDGoogleUser *user;
 @property (nonatomic) FIRUser *FirebaseUserInfo;
 @property (nonatomic) UserInfo *userData;
+@property (nonatomic) UITextView *welcomeText;
 
 @end
 
