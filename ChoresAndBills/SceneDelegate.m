@@ -6,6 +6,7 @@
 //
 
 #import "SceneDelegate.h"
+#define DATABASE_INIT_NAME @"users"
 
 @interface SceneDelegate ()
 
@@ -27,11 +28,34 @@
             self.window.rootViewController = navController;
             //[self.window.rootViewController.navigationController setViewControllers:@[[LoginViewController new]] animated:YES];
         } else {
-            HomeViewController *homeViewControllerNew = [[HomeViewController alloc] init];
-            homeViewControllerNew.user = user;
-            UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:homeViewControllerNew];
-            self.window.rootViewController = navController;
-            NSLog(@"%@",[[FIRAuth auth] currentUser].displayName);//firebase auth works here 
+            if ([[FIRAuth auth] currentUser]) {
+                FIRUser *authResult = [[FIRAuth auth] currentUser];
+                FIRFirestore *db = [FIRFirestore firestore];
+                
+                [[[db collectionWithPath:DATABASE_INIT_NAME] documentWithPath:authResult.email] getDocumentWithCompletion:^(FIRDocumentSnapshot *snapshot, NSError *error) {
+                      if (error != nil) {
+                        NSLog(@"Error getting document: %@", error);
+                      } else if (snapshot.exists) {
+                          NSDictionary *data = snapshot.data;
+                          UserInfo *userData = [[UserInfo alloc] init];
+                          userData.firstName = [data valueForKey:@"first name"];
+                          userData.lastName = [data valueForKey:@"last name"];
+                          userData.chores = [data valueForKey:@"chores"];
+                          userData.Bills = [data valueForKey:@"Bills"];
+                          NSLog(@"%@", userData.chores);
+                          
+                          NSLog(@"results %@", authResult.displayName);
+                          HomeViewController *newViewController = [HomeViewController new];
+                          [newViewController setModalPresentationStyle:UIModalPresentationFullScreen];
+                          newViewController.user = user;
+                          newViewController.userData = userData;
+                          self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController:newViewController];
+                          [self.window makeKeyAndVisible];
+                      } else {
+                        NSLog(@"Document does not exist");
+                      }
+                    }];
+            }
         }
       }];
     

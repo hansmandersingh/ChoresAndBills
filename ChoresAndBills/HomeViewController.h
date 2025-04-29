@@ -9,7 +9,7 @@
 #import "GIDGoogleUser.h"
 #import "GIDSignIn.h"
 #import "LoginViewController.h"
-#import "FIRUserInfo.h"
+#import "FIRUser.h"
 #import "UserInfo.h"
 #import "ChoresViewController.h"
 #import "BillsViewController.h"
