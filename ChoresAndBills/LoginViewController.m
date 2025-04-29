@@ -74,7 +74,7 @@
                             userData.lastName = [data valueForKey:@"last name"];
                             userData.chores = [data valueForKey:@"chores"];
                             userData.Bills = [data valueForKey:@"Bills"];
-                            NSLog(@"%@", userData.chores);
+                            NSLog(@"%@", userData.Bills);
                             
                             NSLog(@"results %@", authResult.user.displayName);
                             HomeViewController *newViewController = [HomeViewController new];
@@ -84,6 +84,15 @@
                             [self.navigationController setViewControllers:@[newViewController] animated:YES];
                         } else {
                           NSLog(@"Document does not exist");
+                            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"No data here" message:@"Fix this !!!" preferredStyle:UIAlertControllerStyleAlert];
+                            UIAlertAction *okButton = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                                [GIDSignIn.sharedInstance signOut];
+                                NSError *signOutError;
+                                [[FIRAuth auth]signOut:&signOutError];
+                                [self.navigationController setViewControllers:@[[LoginViewController new]] animated:YES];
+                            }];
+                            [alertController addAction:okButton];
+                            [self presentViewController:alertController animated:YES completion:nil];
                         }
                       }];
               } else {

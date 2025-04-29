@@ -52,7 +52,22 @@
                           self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController:newViewController];
                           [self.window makeKeyAndVisible];
                       } else {
-                        NSLog(@"Document does not exist");
+                          NSLog(@"Document does not exist scene delegate");
+                          UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"No data here" message:@"Fix this !!!" preferredStyle:UIAlertControllerStyleAlert];
+                          UIAlertAction *okButton = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                              [GIDSignIn.sharedInstance signOut];
+                              NSError *signOutError;
+                              [[FIRAuth auth]signOut:&signOutError];
+                              UINavigationController *navController = [[UINavigationController alloc]init];
+                              [navController setViewControllers:@[[LoginViewController new]] animated:YES];
+                              self.window.rootViewController = navController;
+                              [self.window makeKeyAndVisible];
+                          }];
+                          [alertController addAction:okButton];
+                          self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController:[[ViewController alloc]init]];
+                          [self.window.rootViewController presentViewController:alertController animated:YES completion:nil];
+                          [self.window makeKeyAndVisible];
+                          
                       }
                     }];
             }
