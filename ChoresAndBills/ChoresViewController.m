@@ -16,6 +16,15 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self updateAppearance];
+    self.navigationController.navigationBar.prefersLargeTitles = YES;
+    UIAction *signOutAction = [UIAction actionWithTitle:@"Sign Out" image:[UIImage systemImageNamed:@"figure.run"] identifier:nil handler:^(__kindof UIAction * _Nonnull action) {
+        
+    }];
+    NSArray<UIAction *> *actions = @[signOutAction];
+    UIBarButtonItem *rightBarButton = [[UIBarButtonItem alloc] initWithImage:[UIImage systemImageNamed:@"ellipsis.circle"] menu:[UIMenu menuWithTitle:@"Menu" children:actions]];
+    self.navigationItem.rightBarButtonItem = rightBarButton;
+    
+    self.title = @"Chores";
     // Do any additional setup after loading the view.
 }
 
@@ -42,6 +51,8 @@
         }
     }
 }
+
+
 /*
 #pragma mark - Navigation
 

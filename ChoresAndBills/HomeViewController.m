@@ -18,14 +18,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self updateAppearance];
-    self.navigationController.navigationBar.prefersLargeTitles = YES;
-
-    
-    self.title = @"Welcome";
-    
-    UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithTitle:@"Sign Out" style:UIBarButtonItemStyleDone target:self action:@selector(signOut)];
-    self.navigationItem.rightBarButtonItem = rightButton;
-    
+    self.navigationController.navigationBarHidden = YES;
     [self initializeTabBarController];
     
     // Do any additional setup after loading the view.
@@ -37,8 +30,10 @@
     choresController.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Chores" image:[UIImage systemImageNamed:@"figure.run"] tag:0];
     UINavigationController *billsController = [[UINavigationController alloc] initWithRootViewController:[BillsViewController new]];
     billsController.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Bills" image:[UIImage systemImageNamed:@"book.pages"] tag:0];
+    UINavigationController *settingsController = [[UINavigationController alloc] initWithRootViewController:[SettingsViewController new]];
+    settingsController.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Settings" image:[UIImage systemImageNamed:@"gear"] tag:0];
     
-    NSArray *controller = [NSArray arrayWithObjects:choresController,billsController, nil];
+    NSArray *controller = [NSArray arrayWithObjects:choresController,billsController,settingsController, nil];
     [tabBarcontroller setViewControllers:controller animated:YES];
     
     [self addChildViewController:tabBarcontroller];

@@ -13,6 +13,7 @@
 #import "UserInfo.h"
 #import "ChoresViewController.h"
 #import "BillsViewController.h"
+#import "SettingsViewController.h"
 @import FirebaseCore;
 @import FirebaseAuth;
 
@@ -22,6 +23,8 @@
 @property (nonatomic) FIRUser *FirebaseUserInfo;
 @property (nonatomic) UserInfo *userData;
 @property (nonatomic) UITextView *welcomeText;
+
+-(void)signOut;
 
 @end
 
