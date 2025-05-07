@@ -1,35 +1,35 @@
 //
-//  BillsViewController.m
+//  ChoresViewController.m
 //  ChoresAndBills
 //
 //  Created by Hansmander Singh on 2025-03-22.
 //
 
-#import "BillsViewController.h"
+#import "ChoresViewController.h"
 
-@interface BillsViewController ()
+@interface ChoresViewController ()
 
 @end
 
-@implementation BillsViewController
+@implementation ChoresViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self updateAppearance];
-    
-    
     self.navigationController.navigationBar.prefersLargeTitles = YES;
-    self.title = @"Bills";
-    
-    
+    self.title = @"Chores";
     UIAction *signOutAction = [UIAction actionWithTitle:@"Sign Out" image:[UIImage systemImageNamed:@"figure.run"] identifier:nil handler:^(__kindof UIAction * _Nonnull action) {
-        
+        [self signOut];
     }];
     NSArray<UIAction *> *actions = @[signOutAction];
     UIBarButtonItem *rightBarButton = [[UIBarButtonItem alloc] initWithImage:[UIImage systemImageNamed:@"ellipsis.circle"] menu:[UIMenu menuWithTitle:@"Menu" children:actions]];
+    
     self.navigationItem.rightBarButtonItem = rightBarButton;
+    
+
     // Do any additional setup after loading the view.
 }
+
 
 - (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection {
     [super traitCollectionDidChange:previousTraitCollection];
@@ -44,15 +44,6 @@
     }
 }
 
-- (void)updateAppearance {
-    if (@available(iOS 13.0, *)) {
-        if (self.traitCollection.userInterfaceStyle == UIUserInterfaceStyleDark) {
-            self.view.backgroundColor = [UIColor blackColor];
-        } else {
-            self.view.backgroundColor = [UIColor whiteColor];
-        }
-    }
-}
 
 
 /*
