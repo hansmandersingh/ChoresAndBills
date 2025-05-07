@@ -30,7 +30,8 @@
     UINavigationController *choresController = [[UINavigationController alloc] initWithRootViewController:[ChoresViewControllerSwift create]];
     [choresController setNavigationBarHidden:YES];
     choresController.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Chores" image:[UIImage systemImageNamed:@"figure.run"] tag:0];
-    UINavigationController *billsController = [[UINavigationController alloc] initWithRootViewController:[BillsViewController new]];
+    UINavigationController *billsController = [[UINavigationController alloc] initWithRootViewController:[BillsViewControllerSwift create]];
+    [billsController setNavigationBarHidden:YES];
     billsController.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Bills" image:[UIImage systemImageNamed:@"book.pages"] tag:0];
     UINavigationController *settingsController = [[UINavigationController alloc] initWithRootViewController:[SettingsViewController new]];
     settingsController.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Settings" image:[UIImage systemImageNamed:@"gear"] tag:0];

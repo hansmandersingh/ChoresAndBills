@@ -4,3 +4,4 @@
 
 
 #import "ViewControllers/ChoresViewController.h"
+#import "ViewControllers/BillsViewController.h"

@@ -1,23 +1,23 @@
 //
-//  ChoresView.swift
+//  BillsView.swift
 //  ChoresAndBills
 //
 //  Created by hansmander Singh on 2025-05-07.
 //
 
 import SwiftUI
+import Foundation
 
-
-@objc class ChoresViewControllerSwift: UIViewController {
+@objc class BillsViewControllerSwift: UIViewController {
      @objc static func create() -> UIViewController {
-        let hostingVC = UIHostingController(rootView: ChoresView())
+        let hostingVC = UIHostingController(rootView: BillsView())
          hostingVC.navigationItem.largeTitleDisplayMode = .always
         return hostingVC
     }
 }
 
-struct ChoresView: View {
-    @State var selectedTab = 1
+
+struct BillsView: View {
     var body: some View {
         NavigationView {
             Form {
@@ -25,11 +25,11 @@ struct ChoresView: View {
                     Text("hello")
                 }
             }
-            .navigationTitle("Chores")
+            .navigationTitle("Bills")
         }
     }
 }
 
 #Preview {
-    ChoresView()
+    BillsView()
 }
