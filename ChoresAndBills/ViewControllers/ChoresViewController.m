@@ -6,6 +6,7 @@
 //
 
 #import "ChoresViewController.h"
+#import "ChoresAndBills-Swift.h"
 
 @interface ChoresViewController ()
 
@@ -25,9 +26,8 @@
     UIBarButtonItem *rightBarButton = [[UIBarButtonItem alloc] initWithImage:[UIImage systemImageNamed:@"ellipsis.circle"] menu:[UIMenu menuWithTitle:@"Menu" children:actions]];
     
     self.navigationItem.rightBarButtonItem = rightBarButton;
-    
 
-    // Do any additional setup after loading the view.
+    //[self displaySwiftUIWrapper];
 }
 
 

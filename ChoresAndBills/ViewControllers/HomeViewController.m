@@ -6,6 +6,7 @@
 //
 
 #import "HomeViewController.h"
+#import "ChoresAndBills-Swift.h"
 
 @interface HomeViewController () {
     UITabBarController *tabBarcontroller;
@@ -26,7 +27,8 @@
 
 -(void)initializeTabBarController {
     tabBarcontroller = [[UITabBarController alloc] init];
-    UINavigationController *choresController = [[UINavigationController alloc] initWithRootViewController:[ChoresViewController new]];
+    UINavigationController *choresController = [[UINavigationController alloc] initWithRootViewController:[ChoresViewControllerSwift create]];
+    [choresController setNavigationBarHidden:YES];
     choresController.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Chores" image:[UIImage systemImageNamed:@"figure.run"] tag:0];
     UINavigationController *billsController = [[UINavigationController alloc] initWithRootViewController:[BillsViewController new]];
     billsController.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Bills" image:[UIImage systemImageNamed:@"book.pages"] tag:0];
