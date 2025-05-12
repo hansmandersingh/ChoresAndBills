@@ -24,7 +24,6 @@
 @property (nonatomic) UserInfo *userData;
 @property (nonatomic) UITextView *welcomeText;
 
--(void)signOut;
 
 @end
 

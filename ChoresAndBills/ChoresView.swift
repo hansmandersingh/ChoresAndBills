@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-
 @objc class ChoresViewControllerSwift: UIViewController {
      @objc static func create() -> UIViewController {
         let hostingVC = UIHostingController(rootView: ChoresView())
@@ -16,19 +15,23 @@ import SwiftUI
     }
 }
 
+
 struct ChoresView: View {
     @State var selectedTab = 1
+    @State private var isPresented = false
+    
+    
     var body: some View {
         NavigationView {
-            Form {
-                Section {
-                    Text("hello")
-                }
+            List {
+                
             }
             .navigationTitle("Chores")
         }
+        
     }
 }
+
 
 #Preview {
     ChoresView()

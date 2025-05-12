@@ -33,7 +33,8 @@
     UINavigationController *billsController = [[UINavigationController alloc] initWithRootViewController:[BillsViewControllerSwift create]];
     [billsController setNavigationBarHidden:YES];
     billsController.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Bills" image:[UIImage systemImageNamed:@"book.pages"] tag:0];
-    UINavigationController *settingsController = [[UINavigationController alloc] initWithRootViewController:[SettingsViewController new]];
+    UINavigationController *settingsController = [[UINavigationController alloc] initWithRootViewController:[SettingsViewControllerSwift create]];
+    [settingsController setNavigationBarHidden:YES];
     settingsController.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Settings" image:[UIImage systemImageNamed:@"gear"] tag:0];
     
     NSArray *controller = [NSArray arrayWithObjects:choresController,billsController,settingsController, nil];
@@ -59,12 +60,6 @@
     }
 }
 
--(void)signOut {
-    [GIDSignIn.sharedInstance signOut];
-    NSError *signOutError;
-    [[FIRAuth auth]signOut:&signOutError];
-    [self.navigationController setViewControllers:@[[LoginViewController new]] animated:YES];
-}
 
 - (void)updateAppearance {
     if (@available(iOS 13.0, *)) {

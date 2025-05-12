@@ -5,3 +5,5 @@
 
 #import "ViewControllers/ChoresViewController.h"
 #import "ViewControllers/BillsViewController.h"
+#import "ViewControllers/HomeViewController.h"
+#import "ViewControllers/LoginViewController.h"
