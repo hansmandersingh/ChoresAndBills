@@ -27,7 +27,7 @@
 
 -(void)initializeTabBarController {
     tabBarcontroller = [[UITabBarController alloc] init];
-    UINavigationController *choresController = [[UINavigationController alloc] initWithRootViewController:[ChoresViewControllerSwift create]];
+    UINavigationController *choresController = [[UINavigationController alloc] initWithRootViewController:[ChoresViewControllerSwift create:self.user :self.userData]];
     [choresController setNavigationBarHidden:YES];
     choresController.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Chores" image:[UIImage systemImageNamed:@"figure.run"] tag:0];
     UINavigationController *billsController = [[UINavigationController alloc] initWithRootViewController:[BillsViewControllerSwift create]];

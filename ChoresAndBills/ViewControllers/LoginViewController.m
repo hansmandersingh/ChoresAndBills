@@ -32,22 +32,6 @@
 }
 
 -(void)signIn {
-//    [GIDSignIn.sharedInstance
-//          signInWithPresentingViewController:self
-//                                  completion:^(GIDSignInResult * _Nullable signInResult,
-//                                               NSError * _Nullable error) {
-//        if (error) {
-//          return;
-//        }
-//
-//        NSLog(@"YAY %@", signInResult.user.profile.familyName);
-//        HomeViewController *newViewController = [HomeViewController new];
-//        [newViewController setModalPresentationStyle:UIModalPresentationFullScreen];
-//        newViewController.user = signInResult.user;
-//        [self.navigationController setViewControllers:@[newViewController] animated:YES];
-//        
-//      }];
-    
     GIDConfiguration *config = [[GIDConfiguration alloc] initWithClientID:[FIRApp defaultApp].options.clientID];
     [GIDSignIn.sharedInstance setConfiguration:config];
 

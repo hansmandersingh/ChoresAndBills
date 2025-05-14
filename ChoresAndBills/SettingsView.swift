@@ -21,7 +21,15 @@ struct SettingsView: View {
     var body: some View {
         NavigationView() {
             List {
-                Section("Account") {
+                Section("Preferences") {
+                    Toggle("Notifications", isOn: .constant(true))
+                }
+                
+                Section(header: Text("Account")) {
+                    NavigationLink("Profile", destination: Text("Profile Settings"))
+                }
+                
+                Section() {
                     Button("Log Out") {
                         GIDSignIn.sharedInstance.signOut()
                         showLoginView.toggle()
@@ -30,9 +38,8 @@ struct SettingsView: View {
                             .ignoresSafeArea(.all)
                     }.foregroundColor(.red)
                 }
-                
-                Section("Preferences") {
-                    Toggle("Notifications", isOn: .constant(true))
+                Section ("Made with ❤️ by Hans") {
+                    
                 }
             }
             .navigationTitle("Settings")

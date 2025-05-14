@@ -7,3 +7,4 @@
 #import "ViewControllers/BillsViewController.h"
 #import "ViewControllers/HomeViewController.h"
 #import "ViewControllers/LoginViewController.h"
+#import "Models/UserInfo.h"
