@@ -33,10 +33,12 @@ struct SettingsView: View {
                     Button("Log Out") {
                         GIDSignIn.sharedInstance.signOut()
                         showLoginView.toggle()
-                    }.fullScreenCover(isPresented: $showLoginView) {
+                    }
+                    .foregroundColor(.red)
+                    .fullScreenCover(isPresented: $showLoginView) {
                         ObjectiveCViewControllerWrapperForLogin()
                             .ignoresSafeArea(.all)
-                    }.foregroundColor(.red)
+                    }
                 }
                 Section ("Made with ❤️ by Hans") {
                     

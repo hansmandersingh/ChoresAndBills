@@ -28,17 +28,25 @@ struct ChoresView: View {
     @State var userChores: [String] = []
     @State private var searchText: String = ""
     
+    var filteredChores  : [String] {
+        if searchText.isEmpty {
+            return userChores
+        } else {
+            return userChores.filter{ $0.localizedCaseInsensitiveContains(searchText)}
+        }
+    }
+    
     var body: some View {
         
         NavigationView {
-            List(userChores, id: \.self) { chore in
+            List(filteredChores, id: \.self) { chore in
                 Text(chore)
             }
             .navigationTitle("Chores")
         }.onAppear {
             userChores = self.userData?.chores ?? []
         }
-        .searchable(text: $searchText)
+        .searchable(text: $searchText, prompt: "Search Chores")
         
     }
 }
