@@ -45,43 +45,15 @@
         FIRAuthCredential *credential = [FIRGoogleAuthProvider credentialWithIDToken:result.user.idToken.tokenString
                                          accessToken:result.user.accessToken.tokenString];
           [[FIRAuth auth] signInWithCredential:credential completion:^(FIRAuthDataResult * _Nullable authResult, NSError * _Nullable error) {
-              if (authResult) {
-                      FIRFirestore *db = [FIRFirestore firestore];
-                  
-                  [[[db collectionWithPath:DATABASE_INIT_NAME] documentWithPath:authResult.user.email] getDocumentWithCompletion:^(FIRDocumentSnapshot *snapshot, NSError *error) {
-                        if (error != nil) {
-                          NSLog(@"Error getting document: %@", error);
-                        } else if (snapshot.exists) {
-                            NSDictionary *data = snapshot.data;
-                            UserInfo *userData = [[UserInfo alloc] init];
-                            userData.firstName = [data valueForKey:@"first name"];
-                            userData.lastName = [data valueForKey:@"last name"];
-                            userData.chores = [data valueForKey:@"chores"];
-                            userData.Bills = [data valueForKey:@"Bills"];
-                            NSLog(@"%@", userData.Bills);
-                            
-                            NSLog(@"results %@", authResult.user.displayName);
-                            HomeViewController *newViewController = [HomeViewController new];
-                            [newViewController setModalPresentationStyle:UIModalPresentationFullScreen];
-                            newViewController.user = result.user;
-                            newViewController.userData = userData;
-                            [self.navigationController setViewControllers:@[newViewController] animated:YES];
-                        } else {
-                          NSLog(@"Document does not exist");
-                            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"No data here" message:@"Fix this !!!" preferredStyle:UIAlertControllerStyleAlert];
-                            UIAlertAction *okButton = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                                [GIDSignIn.sharedInstance signOut];
-                                NSError *signOutError;
-                                [[FIRAuth auth]signOut:&signOutError];
-                                [self.navigationController setViewControllers:@[[LoginViewController new]] animated:YES];
-                            }];
-                            [alertController addAction:okButton];
-                            [self presentViewController:alertController animated:YES completion:nil];
-                        }
-                      }];
-              } else {
-                  NSLog(@"error %@", error);
+
+              if (error) {
+                  NSLog(@"Firebase Sign-In Error: %@", error.localizedDescription);
+                  return;
               }
+              
+              NSString *uid = authResult.user.email;
+
+              [self fetchAllData:uid];
           }];
       } else {
         // ...
@@ -89,6 +61,67 @@
     }];
 }
 
+-(void)fetchAllData:(NSString *)uid {
+    FIRFirestore *db = [FIRFirestore firestore];
+    dispatch_group_t group = dispatch_group_create();
+    
+    __block UserInfo *loggedInUser;
+    __block NSMutableArray<Bill *> *bills = [NSMutableArray array];
+    __block NSMutableArray<Chore *> *chores = [NSMutableArray array];
+    __block NSError *fetchError = nil;
+    
+    //Fetch users
+    dispatch_group_enter(group);
+    [[[db collectionWithPath:@"users"] documentWithPath:uid] getDocumentWithCompletion:^(FIRDocumentSnapshot * _Nullable snapshot, NSError * _Nullable error) {
+            if (snapshot.exists) {
+                loggedInUser = [[UserInfo alloc] initWithDictionary:snapshot.data documentId:snapshot.documentID];
+            }
+            dispatch_group_leave(group);
+    }];
+    
+    //fetch Bills
+    dispatch_group_enter(group);
+    [[[db collectionWithPath:@"bills"] queryWhereField:@"sharedWith" arrayContains:uid] getDocumentsWithCompletion:^(FIRQuerySnapshot * _Nullable snapshot, NSError * _Nullable error) {
+        if (error) {
+            fetchError = error;
+        } else {
+            for (FIRDocumentSnapshot *doc in snapshot.documents) {
+                Bill *bill = [[Bill alloc] initWithDictionary:doc.data documentId:doc.documentID];
+                [bills addObject:bill];
+            }
+        }
+        dispatch_group_leave(group);
+    }];
+    
+    //fetch chores
+    
+    dispatch_group_enter(group);
+    [[[db collectionWithPath:@"chores"]queryWhereField:@"sharedWith" arrayContains:uid] getDocumentsWithCompletion:^(FIRQuerySnapshot * _Nullable snapshot, NSError * _Nullable error) {
+            if (error) {
+                fetchError = error;
+            } else {
+                for (FIRDocumentSnapshot *doc in snapshot.documents) {
+                    Chore *chore = [[Chore alloc] initWithDictionary:doc.data documentId:doc.documentID];
+                    [chores addObject:chore];
+                }
+            }
+            dispatch_group_leave(group);
+        }];
+    // Notify when all done
+        dispatch_group_notify(group, dispatch_get_main_queue(), ^{
+            [self postDataFetchingSteps:loggedInUser bills:bills chores:chores];
+        });
+}
+
+-(void)postDataFetchingSteps: (UserInfo *)loggedInUser bills:(NSMutableArray<Bill *>*)bills chores:(NSMutableArray<Chore *>*)chores {
+    HomeViewController *newViewController = [HomeViewController new];
+    [newViewController setModalPresentationStyle:UIModalPresentationFullScreen];
+    newViewController.userData = loggedInUser;
+    newViewController.chores = chores;
+    newViewController.bills = bills;
+    
+    [self.navigationController setViewControllers:@[newViewController] animated:YES];
+}
 
 - (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection {
     [super traitCollectionDidChange:previousTraitCollection];

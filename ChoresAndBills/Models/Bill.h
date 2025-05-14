@@ -13,7 +13,8 @@
 @property (nonatomic, assign) float amount;
 @property (nonatomic, strong) NSDate *dueDate;
 @property (nonatomic,assign) BOOL isPaid;
+@property (nonatomic, strong) NSArray<NSString *> *sharedWith;
 
--(instancetype) initWithId:(NSString *)billId title:(NSString *)title amount:(float)amount dueDate:(NSDate *)dueDate;
+-(instancetype) initWithDictionary:(NSDictionary *)dict documentId:(NSString *)docId;
 
 @end

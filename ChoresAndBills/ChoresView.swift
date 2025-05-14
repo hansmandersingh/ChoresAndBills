@@ -8,10 +8,10 @@
 import SwiftUI
 
 @objc class ChoresViewControllerSwift: UIViewController {
-    @objc static func create(_ userInfo: GIDGoogleUser, _ userData: UserInfo) -> UIViewController {
+    @objc static func create(_ userData: UserInfo, _ chores: [Chore]) -> UIViewController {
         var choreView = ChoresView()
-        choreView.userInfo = userInfo
         choreView.userData = userData
+        choreView.chores = chores
         let hostingVC = UIHostingController(rootView: choreView)
          hostingVC.navigationItem.largeTitleDisplayMode = .always
         return hostingVC
@@ -25,26 +25,24 @@ struct ChoresView: View {
     @State private var isPresented = false
     var userInfo: GIDGoogleUser?
     var userData: UserInfo?
-    @State var userChores: [String] = []
+    var chores: [Chore] = []
     @State private var searchText: String = ""
     
-    var filteredChores  : [String] {
+    var filteredChores  : [Chore] {
         if searchText.isEmpty {
-            return userChores
+            return chores
         } else {
-            return userChores.filter{ $0.localizedCaseInsensitiveContains(searchText)}
+            return chores
         }
     }
     
     var body: some View {
         
         NavigationView {
-            List(filteredChores, id: \.self) { chore in
-                Text(chore)
+            List(chores, id: \.self) { chore in
+                Text(chore.title)
             }
             .navigationTitle("Chores")
-        }.onAppear {
-            userChores = self.userData?.chores ?? []
         }
         .searchable(text: $searchText, prompt: "Search Chores")
         

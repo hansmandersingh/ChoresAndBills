@@ -8,3 +8,5 @@
 #import "ViewControllers/HomeViewController.h"
 #import "ViewControllers/LoginViewController.h"
 #import "Models/UserInfo.h"
+#import "Models/Chore.h"
+#import "Models/Bill.h"

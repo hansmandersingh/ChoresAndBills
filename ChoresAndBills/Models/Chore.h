@@ -6,6 +6,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "UserInfo.h"
 
 @interface Chore: NSObject
 
@@ -14,7 +15,8 @@
 @property (nonatomic,strong) NSString *details;
 @property (nonatomic,strong) NSDate *dueDate;
 @property (nonatomic, assign) BOOL isCompleted;
+@property (nonatomic, strong) NSArray<NSString *> *sharedWith;
 
--(instancetype)initWithId:(NSString *)choreId title:(NSString *)title details:(NSString *)details dueDate:(NSDate *)dueDate;
+- (instancetype)initWithDictionary:(NSDictionary *)dict documentId:(NSString *)docId;
 
 @end

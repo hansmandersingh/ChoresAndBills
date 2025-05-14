@@ -6,7 +6,8 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#import "Bill.h"
+#import "Chore.h"
 
 @interface UserInfo : NSObject
 
@@ -14,6 +15,8 @@
 @property (nonatomic) NSString *firstName;
 @property (nonatomic) NSString *lastName;
 @property (nonatomic) NSArray<NSString *> *chores;
-@property (nonatomic) NSArray<NSString *> *Bills;
+@property (nonatomic) NSArray<Bill *> *Bills;
+
+-(instancetype) initWithDictionary: (NSDictionary *)dict documentId:(NSString *)docId ;
 
 @end

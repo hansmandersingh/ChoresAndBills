@@ -13,6 +13,8 @@
 @import FirebaseFirestore;
 @import FirebaseCore;
 @import FirebaseAuth;
+#import "Bill.h"
+#import "Chore.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

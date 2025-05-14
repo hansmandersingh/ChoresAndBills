@@ -6,17 +6,18 @@
 //
 
 #import "Bill.h"
+#import <FirebaseCore/FirebaseCore.h>
 
 @implementation Bill
 
-- (instancetype)initWithId:(NSString *)billId title:(NSString *)title amount:(float)amount dueDate:(NSDate *)dueDate {
+-(instancetype) initWithDictionary:(NSDictionary *)dict documentId:(NSString *)docId {
     self = [super init];
     if (self) {
-        _billId = billId;
-        _title = title;
-        _amount = amount;
-        _dueDate = dueDate;
-        _isPaid = NO;
+        _billId = docId;
+        _title = dict[@"title"];
+        _amount = [dict[@"amount"] floatValue];
+        _dueDate = [(FIRTimestamp *)dict[@"dueDate"] dateValue];
+        _isPaid = [dict[@"isPaid"] boolValue];
     }
     return self;
 }

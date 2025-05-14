@@ -9,10 +9,10 @@ import SwiftUI
 import Foundation
 
 @objc class BillsViewControllerSwift: UIViewController {
-    @objc static func create(_ userInfo:GIDGoogleUser, _ userData: UserInfo) -> UIViewController {
+    @objc static func create(_ userData: UserInfo, _ bills:[Bill]) -> UIViewController {
         var swiftBillsView = BillsView()
-        swiftBillsView.userInfo = userInfo;
         swiftBillsView.userData = userData;
+        swiftBillsView.bills = bills;
         let hostingVC = UIHostingController(rootView: swiftBillsView)
          hostingVC.navigationItem.largeTitleDisplayMode = .always
         return hostingVC
@@ -24,25 +24,22 @@ struct BillsView: View {
     @State private var searchText = ""
     var userInfo: GIDGoogleUser?
     var userData: UserInfo?
-    @State var userBills: [String] = []
+    var bills:[Bill] = []
     
-    var filteredBills  : [String] {
+    var filteredBills : [Bill] {
         if searchText.isEmpty {
-            return userBills
+            return bills
         } else {
-            return userBills.filter{ $0.localizedCaseInsensitiveContains(searchText)}
+            return bills
         }
     }
     
     var body: some View {
         NavigationView {
             List(filteredBills, id: \.self) { bill in
-                Text(bill)
+                Text(bill.title)
             }
             .navigationTitle("Bills")
-        }
-        .onAppear {
-            userBills = self.userData?.bills ?? []
         }
         .searchable(text: $searchText)
         

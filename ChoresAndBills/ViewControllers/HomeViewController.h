@@ -11,17 +11,19 @@
 #import "LoginViewController.h"
 #import "FIRUser.h"
 #import "UserInfo.h"
-//#import "ChoresViewController.h"
-//#import "BillsViewController.h"
 #import "SettingsViewController.h"
 @import FirebaseCore;
 @import FirebaseAuth;
+#import "Bill.h"
+#import "Chore.h"
 
 @interface HomeViewController : UIViewController
 
 @property (nonatomic) GIDGoogleUser *user;
 @property (nonatomic) FIRUser *FirebaseUserInfo;
 @property (nonatomic) UserInfo *userData;
+@property (nonatomic, strong) NSMutableArray<Bill *> *bills;
+@property (nonatomic, strong) NSMutableArray<Chore *> *chores;
 @property (nonatomic) UITextView *welcomeText;
 
 
