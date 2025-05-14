@@ -26,17 +26,19 @@ struct ChoresView: View {
     var userInfo: GIDGoogleUser?
     var userData: UserInfo?
     @State var userChores: [String] = []
+    @State private var searchText: String = ""
     
     var body: some View {
         
         NavigationView {
-            List {
-                let _ = print(userChores)
+            List(userChores, id: \.self) { chore in
+                Text(chore)
             }
             .navigationTitle("Chores")
         }.onAppear {
             userChores = self.userData?.chores ?? []
         }
+        .searchable(text: $searchText)
         
     }
 }
