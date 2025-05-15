@@ -50,10 +50,7 @@
                   NSLog(@"Firebase Sign-In Error: %@", error.localizedDescription);
                   return;
               }
-              
-              NSString *uid = authResult.user.email;
-
-              [self fetchAllData:uid];
+              [self fetchAllData:authResult];
           }];
       } else {
         // ...
@@ -61,8 +58,9 @@
     }];
 }
 
--(void)fetchAllData:(NSString *)uid {
+-(void)fetchAllData:(FIRAuthDataResult *)authResult {
     FIRFirestore *db = [FIRFirestore firestore];
+    NSString *uid = authResult.user.email;
     dispatch_group_t group = dispatch_group_create();
     
     __block UserInfo *loggedInUser;
@@ -109,17 +107,41 @@
         }];
     // Notify when all done
         dispatch_group_notify(group, dispatch_get_main_queue(), ^{
-            [self postDataFetchingSteps:loggedInUser bills:bills chores:chores];
+            [self postDataFetchingSteps:loggedInUser bills:bills chores:chores authResults:authResult];
         });
 }
 
--(void)postDataFetchingSteps: (UserInfo *)loggedInUser bills:(NSMutableArray<Bill *>*)bills chores:(NSMutableArray<Chore *>*)chores {
+-(void)postDataFetchingSteps: (UserInfo *)loggedInUser bills:(NSMutableArray<Bill *>*)bills chores:(NSMutableArray<Chore *>*)chores authResults:(FIRAuthDataResult *)authResult {
+    UserInfo *refactoredLoggedInUser = [[UserInfo alloc] init];
+    
+    if (!loggedInUser) {
+        FIRFirestore *db = [FIRFirestore  firestore];
+        [[[db collectionWithPath:@"users"] documentWithPath:authResult.user.email] setData:@{
+                    @"email": authResult.user.email,
+                    @"first name": authResult.user.displayName,
+                    @"last name": authResult.user.displayName
+                } completion:^(NSError * _Nullable error) {
+                    if (error != nil) {
+                        NSLog(@"Error writing document: %@ ", error);
+                    } else {
+                        NSLog(@"Document successfully written!");
+                    }
+        }];
+        refactoredLoggedInUser.email = authResult.user.email;
+        refactoredLoggedInUser.firstName = authResult.user.displayName;
+        refactoredLoggedInUser.lastName = authResult.user.displayName;
+    } else {
+        refactoredLoggedInUser.email = loggedInUser.email;
+        refactoredLoggedInUser.firstName = loggedInUser.firstName;
+        refactoredLoggedInUser.lastName = loggedInUser.lastName;
+    }
+    
+    
     HomeViewController *newViewController = [HomeViewController new];
     [newViewController setModalPresentationStyle:UIModalPresentationFullScreen];
-    newViewController.userData = loggedInUser;
+    newViewController.userData = refactoredLoggedInUser;
     newViewController.chores = chores;
     newViewController.bills = bills;
-    
     [self.navigationController setViewControllers:@[newViewController] animated:YES];
 }
 

@@ -19,6 +19,20 @@ import Foundation
     }
 }
 
+struct BillRow: View {
+    var bill: Bill
+    var body: some View {
+        VStack(alignment: .leading) {
+            Text("\(bill.title)")
+                .font(.headline)
+            DisclosureGroup("Show Description") {
+                Text("Amount: \(bill.amount.formatted(.currency(code: "CAD")))")
+            }
+        }
+    }
+    
+}
+
 
 struct BillsView: View {
     @State private var searchText = ""
@@ -30,18 +44,20 @@ struct BillsView: View {
         if searchText.isEmpty {
             return bills
         } else {
-            return bills
+            return bills.filter { $0.title.localizedStandardContains(searchText) && $0.description.localizedStandardContains(searchText)}
         }
     }
     
     var body: some View {
         NavigationView {
-            List(filteredBills, id: \.self) { bill in
-                Text(bill.title)
+            List {
+                ForEach(filteredBills, id: \.self) { bill in
+                    BillRow(bill: bill)
+                }
             }
             .navigationTitle("Bills")
         }
-        .searchable(text: $searchText)
+        .searchable(text: $searchText, prompt: "Search Bills")
         
     }
 }

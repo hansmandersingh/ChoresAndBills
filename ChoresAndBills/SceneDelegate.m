@@ -91,13 +91,20 @@
 }
 
 -(void)postDataFetchingSteps: (UserInfo *)loggedInUser bills:(NSMutableArray<Bill *>*)bills chores:(NSMutableArray<Chore *>*)chores {
-    HomeViewController *newViewController = [HomeViewController new];
-    [newViewController setModalPresentationStyle:UIModalPresentationFullScreen];
-    newViewController.userData = loggedInUser;
-    newViewController.chores = chores;
-    newViewController.bills = bills;
-    self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController:newViewController];
-    [self.window makeKeyAndVisible];
+    if (loggedInUser) {
+        HomeViewController *newViewController = [HomeViewController new];
+        [newViewController setModalPresentationStyle:UIModalPresentationFullScreen];
+        newViewController.userData = loggedInUser;
+        newViewController.chores = chores;
+        newViewController.bills = bills;
+        self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController:newViewController];
+        [self.window makeKeyAndVisible];
+    } else {
+        LoginViewController *newViewController = [LoginViewController new];
+        [newViewController setModalPresentationStyle:UIModalPresentationFullScreen];
+        self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController:newViewController];
+        [self.window makeKeyAndVisible];
+    }
 }
 
 

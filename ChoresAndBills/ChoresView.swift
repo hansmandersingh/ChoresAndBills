@@ -32,15 +32,19 @@ struct ChoresView: View {
         if searchText.isEmpty {
             return chores
         } else {
-            return chores
+            return chores.filter { chore in
+                chore.title.lowercased().contains(searchText.lowercased())
+            }
         }
     }
     
     var body: some View {
         
         NavigationView {
-            List(chores, id: \.self) { chore in
-                Text(chore.title)
+            List(filteredChores, id: \.self) { chore in
+                HStack {
+                    Text(chore.title)
+                }
             }
             .navigationTitle("Chores")
         }
