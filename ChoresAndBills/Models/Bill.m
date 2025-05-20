@@ -18,6 +18,7 @@
         _amount = [dict[@"amount"] floatValue];
         _dueDate = [(FIRTimestamp *)dict[@"dueDate"] dateValue];
         _isPaid = [dict[@"isPaid"] boolValue];
+        _sharedWith = dict[@"sharedWith"];
     }
     return self;
 }

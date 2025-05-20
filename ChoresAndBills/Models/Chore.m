@@ -17,6 +17,7 @@
         _details = dict[@"details"];
         _dueDate = [(FIRTimestamp *)dict[@"dueDate"] dateValue];
         _isCompleted = [dict[@"isCompleted"] boolValue];
+        _sharedWith = dict[@"sharedWith"];
     }
     return self;
 }
