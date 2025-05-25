@@ -8,11 +8,24 @@
 import SwiftUI
 import Foundation
 
+struct SwiftBill: Identifiable, Hashable {
+    var id: String
+    var title: String
+    var amount: Float
+    var originalBill: Bill
+    
+    init(bill: Bill) {
+        self.id = bill.billId
+        self.title = bill.title
+        self.amount = bill.amount
+        self.originalBill = bill
+    }
+}
+
 @objc class BillsViewControllerSwift: UIViewController {
     @objc static func create(_ userData: UserInfo, _ bills:[Bill]) -> UIViewController {
-        var swiftBillsView = BillsView()
-        swiftBillsView.userData = userData;
-        swiftBillsView.bills = bills;
+        let swiftBills = bills.map{ SwiftBill(bill: $0) }
+        let swiftBillsView = BillsView(userData: userData, stateFullBill: swiftBills)
         let hostingVC = UIHostingController(rootView: swiftBillsView)
          hostingVC.navigationItem.largeTitleDisplayMode = .always
         return hostingVC
@@ -38,13 +51,13 @@ struct BillsView: View {
     @State private var searchText = ""
     var userInfo: GIDGoogleUser?
     var userData: UserInfo?
-    var bills:[Bill] = []
+    @State var stateFullBill:[SwiftBill] = []
     
-    var filteredBills : [Bill] {
+    var filteredBills : [SwiftBill] {
         if searchText.isEmpty {
-            return bills
+            return stateFullBill
         } else {
-            return bills.filter { $0.title.localizedStandardContains(searchText) && $0.description.localizedStandardContains(searchText)}
+            return stateFullBill.filter { $0.title.localizedStandardContains(searchText)}
         }
     }
     
@@ -52,7 +65,7 @@ struct BillsView: View {
         NavigationView {
             List {
                 ForEach(filteredBills, id: \.self) { bill in
-                    BillRow(bill: bill)
+                    BillRow(bill: bill.originalBill)
                 }
             }
             .navigationTitle("Bills")
