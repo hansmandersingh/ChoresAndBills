@@ -10,3 +10,4 @@
 #import "Models/UserInfo.h"
 #import "Models/Chore.h"
 #import "Models/Bill.h"
+#import "AppDelegate.h"

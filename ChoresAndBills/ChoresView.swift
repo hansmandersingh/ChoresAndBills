@@ -66,6 +66,21 @@ struct ChoresView: View {
                     
                     choreRow(chore: chore.originalChore)
                         .padding(.vertical, 4)
+                        .swipeActions(edge: .trailing) {
+                            Button(role: .destructive) {
+                                    // delete action
+                                } label: {
+                                    Label("Delete", systemImage: "trash")
+                                }
+                        }
+                        .swipeActions(edge: .leading) {
+                            Button {
+                                //showingEdit = true
+                            } label: {
+                                Label("Edit", systemImage: "pencil")
+                            }
+                            .tint(.blue)
+                        }
                     
                 }
                 .onDelete(perform: deleteChores)

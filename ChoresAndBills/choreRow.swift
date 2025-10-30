@@ -39,26 +39,6 @@ struct choreRow: View {
                     .font(.footnote)
             }
             .contentShape(Rectangle())
-                            .onTapGesture {
-                                withAnimation(.easeInOut) {
-                                    isExpanded.toggle()
-                                }
-                            }
-                            .swipeActions(edge: .trailing) {
-                                Button(role: .destructive) {
-                                        // delete action
-                                    } label: {
-                                        Label("Delete", systemImage: "trash")
-                                    }
-                            }
-                            .swipeActions(edge: .leading) {
-                                Button {
-                                    //showingEdit = true
-                                } label: {
-                                    Label("Edit", systemImage: "pencil")
-                                }
-                                .tint(.blue)
-                            }
         }
     }
     
