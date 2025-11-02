@@ -24,10 +24,10 @@ struct SwiftChore: Identifiable, Hashable {
 
 @objc class ChoresViewControllerSwift: UIViewController {
     @objc static func create(_ userData: UserInfo, _ chores: [Chore]) -> UIViewController {
-        let swiftChores = chores.map{ SwiftChore(chore:$0) }
-        let choreView = ChoresView(userData, stateFullChores: swiftChores)
+        var swiftChores = chores.map{ SwiftChore(chore:$0) }
+        var choreView = ChoresView(userData, stateFullChores: swiftChores)
         let hostingVC = UIHostingController(rootView: choreView)
-         hostingVC.navigationItem.largeTitleDisplayMode = .always
+         //hostingVC.navigationItem.largeTitleDisplayMode = .always
         return hostingVC
     }
 }
@@ -57,7 +57,7 @@ struct ChoresView: View {
         self.userData = userData
         _stateFullChores = State(initialValue: stateFullChores)
     }
-    
+    var sharedObjectiveCInstance = LoginViewController()
     var body: some View {
         
         NavigationView {
@@ -102,6 +102,9 @@ struct ChoresView: View {
                 // Use this sheet to add a new Chore or edit an existing one
                 // You can pass nil to mean "add new chore"
 //                ChoreEdit(chore: nil, title: "") // <-- You'd have to adapt ChoreEditView to handle this
+            }
+            .refreshable {
+                sharedObjectiveCInstance.refreshData()
             }
             
         }

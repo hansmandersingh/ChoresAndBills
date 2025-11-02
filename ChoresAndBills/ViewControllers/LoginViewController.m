@@ -31,6 +31,25 @@
     [_signInButton.centerYAnchor constraintEqualToAnchor:self.view.centerYAnchor].active = YES;
 }
 
+-(void)refreshData {
+    [GIDSignIn.sharedInstance restorePreviousSignInWithCompletion:^(GIDGoogleUser * _Nullable user,
+                                                                      NSError * _Nullable error) {
+        if (error) {
+            return;
+        }
+        if (user) {
+            NSString *idToken = user.idToken.tokenString;
+            NSString *accessToken = user.accessToken.tokenString;
+            
+            FIRAuthCredential *credential = [FIRGoogleAuthProvider credentialWithIDToken:idToken accessToken:accessToken];
+            [[FIRAuth auth] signInWithCredential:credential completion:^(FIRAuthDataResult * _Nullable authResult, NSError * _Nullable error) {
+                [self fetchAllData:authResult];
+            }];
+        }
+        
+      }];
+}
+
 -(void)signIn {
     GIDConfiguration *config = [[GIDConfiguration alloc] initWithClientID:[FIRApp defaultApp].options.clientID];
     [GIDSignIn.sharedInstance setConfiguration:config];

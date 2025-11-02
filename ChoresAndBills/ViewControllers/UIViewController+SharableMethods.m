@@ -29,4 +29,9 @@
     }
 }
 
+-(void)fetchAllData {
+    LoginViewController* tempController = [[LoginViewController alloc] init];
+    [tempController signIn];
+}
+
 @end
